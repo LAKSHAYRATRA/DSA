@@ -1,0 +1,27 @@
+class Solution {
+private:
+    bool check(vector<int>& arr, int target, int index, vector<vector<int>>& dp) {
+        if (target == 0) return true;
+        if (index < 0) return false;
+
+        if (dp[index][target] != -1) {
+            return dp[index][target];
+        }
+
+        bool not_take = check(arr, target, index - 1, dp);
+        bool take = false;
+        if (arr[index] <= target) {
+            take = check(arr, target - arr[index], index - 1, dp);
+        }
+
+        dp[index][target] = take || not_take;
+        return dp[index][target];
+    }
+
+public:
+    bool isSubsetSum(vector<int>& arr, int target) {
+        int n = arr.size();
+        vector<vector<int>> dp(n, vector<int>(target + 1, -1));
+        return check(arr, target, n - 1, dp);
+    }
+};
