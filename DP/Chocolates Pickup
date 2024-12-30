@@ -1,0 +1,37 @@
+class Solution {
+private:
+    int max_sum(int i, int j1, int j2, int n, int m, vector<vector<int>>& grid, vector<vector<vector<int>>>& dp) {
+        if (j1 < 0 || j2 < 0 || j1 >= m || j2 >= m) {
+            return INT_MIN;
+        }
+        
+        if (i == n) {
+            return 0;
+        }
+
+        if (dp[i][j1][j2] != -1) return dp[i][j1][j2];
+
+        int ans = INT_MIN;
+        int dj[] = {-1, 0, 1};
+        
+        for (int d1 = 0; d1 < 3; d1++) {
+            for (int d2 = 0; d2 < 3; d2++) {
+                int nj1 = j1 + dj[d1];
+                int nj2 = j2 + dj[d2];
+
+                int current_sum = (j1 == j2) ? grid[i][j1] : grid[i][j1] + grid[i][j2];
+                current_sum += max_sum(i + 1, nj1, nj2, n, m, grid, dp);
+                
+                ans = max(ans, current_sum);
+            }
+        }
+
+        return dp[i][j1][j2] = ans;
+    }
+  
+public:
+    int solve(int n, int m, vector<vector<int>>& grid) {
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(m, vector<int>(m, -1)));
+        return max_sum(0, 0, m - 1, n, m, grid, dp);
+    }
+};
