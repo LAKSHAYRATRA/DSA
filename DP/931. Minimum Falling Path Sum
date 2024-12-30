@@ -1,0 +1,36 @@
+class Solution {
+    private:
+    int minPath(vector<vector<int>>&matrix,vector<vector<int>>&dp,int n){
+        for(int i=0;i<=n;i++){
+            dp[0][i]=matrix[0][i];
+        }
+        for(int i=1;i<=n;i++){
+            for(int j=0;j<=n;j++){
+                int prev=INT_MAX;
+                int curr=INT_MAX;
+                int ahead=INT_MAX;
+                if(j!=0)prev=matrix[i][j]+dp[i-1][j-1];
+                curr=matrix[i][j]+dp[i-1][j];
+                if(j!=n)ahead=matrix[i][j]+dp[i-1][j+1];
+                dp[i][j]=min(prev,min(ahead,curr));
+            }
+        }
+        int min_ans=INT_MAX;
+        for(int i=0;i<=n;i++){
+            min_ans=min(min_ans,dp[n][i]);
+        }
+        for(int i=0;i<=n;i++){
+            for(int j=0;j<=n;j++){
+                cout<<dp[i][j]<<"\t";
+            }
+            cout<<"\n";
+        }
+        return min_ans;
+    }
+public:
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        vector<vector<int>>dp(n,vector<int>(n,-1));
+        return minPath(matrix,dp,n-1);
+    }
+};
