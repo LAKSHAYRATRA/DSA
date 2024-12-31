@@ -1,0 +1,28 @@
+class Solution{
+private:
+    int count(vector<int>&arr,int n,int target,vector<vector<int>>&dp){
+        if(target==0)return 1;
+        if(n<0)return 0;
+        if(dp[n][target]!=-1)return dp[n][target];
+        int take=0;
+        if(arr[n]<=target){
+            take=count(arr,n-1,target-arr[n],dp);
+        }
+        int not_take=count(arr,n-1,target,dp);
+        return dp[n][target]=take+not_take;
+    }
+    
+  public:
+    int perfectSum(vector<int>& arr, int target) {
+        int n=arr.size();
+        sort(arr.begin(),arr.end(),greater<int>());
+        vector<vector<int>>dp(n,vector<int>(target+1,-1));
+        int sum=0;
+        for(int i=0;i<arr.size();i++){
+            if(arr[i]==0)sum++;
+            
+        }
+        if(target==0)return pow(2,sum);
+        return count(arr,n-1,target,dp);
+    }
+};
