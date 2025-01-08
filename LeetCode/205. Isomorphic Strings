@@ -1,0 +1,39 @@
+#include <unordered_map>
+#include <string>
+
+class Solution {
+public:
+    bool isIsomorphic(std::string s, std::string t) {
+        // Check if lengths are different
+        if (s.size() != t.size()) return false;
+
+        // Create two maps for character mapping
+        std::unordered_map<char, char> mpp1; // s -> t
+        std::unordered_map<char, char> mpp2; // t -> s
+
+        for (int i = 0; i < s.size(); i++) {
+            char charS = s[i];
+            char charT = t[i];
+
+            // Check mapping from s to t
+            if (mpp1.find(charS) == mpp1.end()) {
+                mpp1[charS] = charT; // Create new mapping
+            } else {
+                if (mpp1[charS] != charT) {
+                    return false; // Mismatch found
+                }
+            }
+
+            // Check mapping from t to s
+            if (mpp2.find(charT) == mpp2.end()) {
+                mpp2[charT] = charS; // Create new mapping
+            } else {
+                if (mpp2[charT] != charS) {
+                    return false; // Mismatch found
+                }
+            }
+        }
+
+        return true; // All checks passed, strings are isomorphic
+    }
+};
