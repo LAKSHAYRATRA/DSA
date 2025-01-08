@@ -1,0 +1,50 @@
+class Solution {
+public:
+    int myAtoi(std::string s) {
+        unordered_map<char, int> mpp;
+        mpp['0'] = 0;
+        mpp['1'] = 1;
+        mpp['2'] = 2;
+        mpp['3'] = 3;
+        mpp['4'] = 4;
+        mpp['5'] = 5;
+        mpp['6'] = 6;
+        mpp['7'] = 7;
+        mpp['8'] = 8;
+        mpp['9'] = 9;
+
+        bool character_found = false;
+        int negative = 1;
+        long long ans = 0;
+
+        for (int i = 0; i < s.size(); i++) {
+            if (s[i] == ' ') {
+                if (!character_found) continue;
+                else break;
+            }
+            if (s[i] == '-') {
+                if (!character_found) {
+                    negative = -1;
+                    character_found = true;
+                    continue;
+                } else break;
+            }
+            if (s[i] == '+') {
+                if (!character_found) {
+                    character_found = true;
+                    continue;
+                } else break;
+            }
+            if (mpp.find(s[i]) != mpp.end()) {
+                character_found = true;
+                ans = ans * 10 + mpp[s[i]];
+                if (ans * negative > numeric_limits<int>::max()) return numeric_limits<int>::max();
+                if (ans * negative < numeric_limits<int>::min()) return numeric_limits<int>::min();
+            } else {
+                break;
+            }
+        }
+        
+        return ans * negative;
+    }
+};
